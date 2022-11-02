@@ -1,6 +1,7 @@
 package me.mourishitz;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import me.mourishitz.commands.CommandManager;
 import me.mourishitz.listeners.EventListener;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -28,10 +29,10 @@ public class CuppyBot {
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_PRESENCES);
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.setChunkingFilter(ChunkingFilter.ALL);
-        builder.enableCache(CacheFlag.ONLINE_STATUS);
+        builder.enableCache(CacheFlag.ONLINE_STATUS, CacheFlag.ACTIVITY);
         shardManager = builder.build();
 
-        shardManager.addEventListener(new EventListener());
+        shardManager.addEventListener(new EventListener(), new CommandManager());
     }
 
     public Dotenv getConfig(){
