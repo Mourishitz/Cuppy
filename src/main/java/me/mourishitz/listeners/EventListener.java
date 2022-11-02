@@ -3,11 +3,10 @@ package me.mourishitz.listeners;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.util.List;
 
 // Lista de eventos JDA: https://jda.wiki/introduction/events-list/
 
@@ -28,17 +27,10 @@ public class EventListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        String message = event.getMessage().getContentRaw();
-        if(message.equals("c.ping")){
-            event.getChannel().sendMessage("pong").queue();
+        List<Member> mentioned = event.getMessage().getMentions().getMembers();
+        Member cuppy = event.getGuild().getMemberById("1035013322040426558");
+        if(mentioned.contains(cuppy)){
+            event.getMessage().reply("Digite '/' no chat para conhecer meus comandos").queue();
         }
-    }
-
-    @Override
-    public void onUserUpdateOnlineStatus(@NotNull UserUpdateOnlineStatusEvent event) {
-        User user = event.getUser();
-        String message = "Olha o " + user.getAsTag() + " mudando  para " + event.getNewOnlineStatus().name();
-        Objects.requireNonNull(event.getGuild().getDefaultChannel()).sendMessage(message).queue();
-
     }
 }
